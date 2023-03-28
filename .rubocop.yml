@@ -4,3 +4,9 @@ Style/SafeNavigation:
 
 Metrics/AbcSize:
   Enabled: false
+
+Style/NegatedIf:
+  Enabled: false
+
+Style/IdenticalConditionalBranches:
+  Enabled: false

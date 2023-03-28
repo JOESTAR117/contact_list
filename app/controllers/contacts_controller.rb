@@ -1,12 +1,12 @@
 class ContactsController < ApplicationController
+  before_action :require_logged_in_user
   before_action :set_contact, only: %i[show edit update destroy]
 
   # GET /contacts or /contacts.json
   def index
-    @contacts = Contact.all
+    @contacts = current_user.contacts
   end
 
-  # GET /contacts/1 or /contacts/1.json
   def show; end
 
   # GET /contacts/new
@@ -19,39 +19,34 @@ class ContactsController < ApplicationController
 
   # POST /contacts or /contacts.json
   def create
-    @contact = Contact.new(contact_params)
-
-    respond_to do |format|
-      if @contact.save
-        format.html { redirect_to contact_url(@contact), notice: 'Contact was successfully created.' }
-        format.json { render :show, status: :created, location: @contact }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @contact.errors, status: :unprocessable_entity }
-      end
+    @contact = current_user.contacts.build(contact_params)
+    if @contact.save
+      flash[:success] = 'Contato criado com sucesso.'
+      redirect_to contacts_path
+    else
+      render :new
     end
   end
 
   # PATCH/PUT /contacts/1 or /contacts/1.json
   def update
-    respond_to do |format|
-      if @contact.update(contact_params)
-        format.html { redirect_to contact_url(@contact), notice: 'Contact was successfully updated.' }
-        format.json { render :show, status: :ok, location: @contact }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @contact.errors, status: :unprocessable_entity }
-      end
+    if @contact.update(contact_params)
+      flash[:success] = 'Contato atualizado com sucesso'
+      redirect_to contacts_path
+    else
+      render 'edit'
     end
   end
 
   # DELETE /contacts/1 or /contacts/1.json
   def destroy
     @contact.destroy
-
-    respond_to do |format|
-      format.html { redirect_to contacts_url, notice: 'Contact was successfully destroyed.' }
-      format.json { head :no_content }
+    if @contact.destroy
+      flash[:success] = 'Contato removido com sucesso'
+      redirect_to contacts_url
+    else
+      flash[:danger] = 'Contato não encontrado.'
+      redirect_to contacts_url
     end
   end
 
@@ -59,7 +54,7 @@ class ContactsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_contact
-    @contact = Contact.find(params[:id])
+    @contact = current_user.contacts.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.

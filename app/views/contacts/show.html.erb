@@ -1,10 +1,23 @@
-<p style="color: green"><%= notice %></p>
-
-<%= render @contact %>
-
-<div>
-  <%= link_to "Edit this contact", edit_contact_path(@contact) %> |
-  <%= link_to "Back to contacts", contacts_path %>
-
-  <%= button_to "Destroy this contact", @contact, method: :delete %>
+<div class="row">
+  <div class="col-md-8 col-md-offset-2 col-xs-12">
+    <table class="table table-striped">
+      <thead>
+        Contato
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <%= render @contact %>
+          </td>
+          <td>
+            <%= link_to "Editar", edit_contact_path(@contact), class: 'btn btn-warning' %>
+          </td>
+          <td>
+            <%= button_to "Excluir", @contact, method: :delete, class: 'btn btn-danger', data: { confirm: 'Tem certeza que deseja excluir?'} %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+<%= link_to "Voltar para contatos", contacts_path, class: 'btn btn-primary' %>

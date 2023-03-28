@@ -6,3 +6,6 @@ pt-BR:
         email: 'Email'
         password: 'Senha'
         password_confirmation: 'Confirmação da senha'
+      contact:
+        name: 'Nome'
+        phone: 'Telefone'
